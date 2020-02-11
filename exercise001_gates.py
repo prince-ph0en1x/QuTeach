@@ -88,7 +88,7 @@ k2.display()				# The superposition is destroyed on measurement
         
 p.add_kernel(k1)			# Add the kernel to the program
 p.add_kernel(k2)			# Add the kernel to the program
-p.add_kernel(k2)			# Add the kernel to the program again (since the superposition has already collapsed, there will be no change in output)
+# p.add_kernel(k2)			# Add the kernel to the program again (since the superposition has already collapsed, there will be no change in output)
 
 p.compile()					# Compile the program (this generates the cqasm files if the option is set)
 

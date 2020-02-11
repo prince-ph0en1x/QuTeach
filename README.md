@@ -1,0 +1,1 @@
+Simple OpenQL exercises for teaching
