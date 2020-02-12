@@ -25,3 +25,15 @@ qubits 3
     wait 1
     display
 
+.decode
+
+    measure q[1]
+    wait 3
+    measure q[0]
+    wait 10
+    cnot q[1],q[2]
+    wait 3
+    cz q[0],q[2]
+    wait 3
+    display
+

@@ -39,6 +39,16 @@ k3.gate('h', [0])
 k3.display()
 p.add_kernel(k3)
 
+k4 = ql.Kernel("decode", platform, num_qubits)
+
+k4.gate('measure', [0])
+k4.gate('measure', [1])
+k4.gate('cnot', [1,2])
+k4.gate('cphase', [0,2])
+
+k4.display()
+p.add_kernel(k4)
+
 # .encode  
 #    measure q0
 #    measure q1

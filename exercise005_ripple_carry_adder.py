@@ -1,4 +1,4 @@
-# Quantum Search
+# Quantum Ripple Carry Adder (2-bit)
 
 from openql import openql as ql
 import os
@@ -11,44 +11,42 @@ ql.set_option('write_qasm_files', 'yes')
 config_fn  = os.path.join(curdir, 'config_qx.json')
 platform   = ql.Platform('platform_none', config_fn)
 
-num_qubits = 3
-p = ql.Program('exercise_qasm_004', platform, num_qubits)
+num_qubits = 7	# MSQ [c2 b1 a1 c1 b0 a0 c0] LSQ
+p = ql.Program('exercise_qasm_005', platform, num_qubits)
+
+def sum(k,a0,b0,s0):	# S0 = (A0+B0) MOD 2
+	k.gate('cnot', [a0,s0])
+	k.gate('cnot', [b0,s0])
+
+def carry(k,c0,a0,b0,c1):
+	k.gate('toffoli', [a0,b0,c1])
+	k.gate('cnot', [a0,b0])
+	k.gate('toffoli', [c0,b0,c1])
+
+def rcarry(k,c0,a0,b0,c1):
+	k.gate('toffoli', [c0,b0,c1])
+	k.gate('cnot', [a0,b0])
+	k.gate('toffoli', [a0,b0,c1])
 
 k1 = ql.Kernel("initialize", platform, num_qubits)
 for i in range(0, num_qubits):
 	k1.gate('prep_z', [i])	# Initialize all qubits to |0>
-for i in range(0, num_qubits):
-	k1.gate('h', [i])		# Create full superposition
+k1.gate('x', [2])	# a = 10
+k1.gate('x', [4])	# b = 01
 k1.display()
 p.add_kernel(k1)
 
-k2 = ql.Kernel("oracle", platform, num_qubits)
+k2 = ql.Kernel("adder", platform, num_qubits)
 
-k2.gate('x', [2]) 
-k2.gate('h', [2]) 
-k2.gate('toffoli', [0,1,2])
-k2.gate('h', [2]) 
-k2.gate('x', [2])
+carry(k2,0,1,2,3)
+carry(k2,3,4,5,6)
+k2.gate('cnot',[4,5])
+sum(k2,4,3,5)
+rcarry(k2,0,1,2,3)
+sum(k2,1,0,2)
 
-k2.display()                # Mark |011>
+k2.display()
 p.add_kernel(k2)
-
-k3 = ql.Kernel("amplify", platform, num_qubits)
-
-for i in range(0, num_qubits):
-	k3.gate('h', [i])
-for i in range(0, num_qubits):
-	k3.gate('x', [i])
-k3.gate('h', [2]) 
-k3.gate('toffoli', [0,1,2])
-k3.gate('h', [2])
-for i in range(0, num_qubits):
-	k3.gate('x', [i])
-for i in range(0, num_qubits):
-	k3.gate('h', [i])
-    
-k3.display()
-p.add_kernel(k3)
 
 p.compile()
 

@@ -61,6 +61,7 @@ k1.gate('rz', [0], 0, 0.15)	# Arbitrary rotation about Z (angle in radian, last 
 k1.gate('swap', [0, 1])	# Swap gate
 
 k1.gate('cz', [0, 1])	# CZ with qubit 0 and qubit 1
+k1.gate('cphase', [0, 1])	# Alternate syntax
 
 q_control = 0
 q_target = 1

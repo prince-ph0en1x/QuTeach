@@ -3,12 +3,6 @@ version 1.0
 qubits 3
 .kernel_1
 
-    prep_z q[2]
-    wait 1
-    z q[2]
-    wait 1
-    display
-    wait 1073741803
     prep_z q[0]
     wait 1
     x q[0]
@@ -30,7 +24,7 @@ qubits 3
     tdag q[0]
     wait 1
     rx q[0], 0.15
-    wait 18446744071562067968
+    wait 1
     { prep_z q[1] | ry q[0], 0.15 }
     wait 1
     { y q[1] | rz q[0], 0.15 }
@@ -39,10 +33,17 @@ qubits 3
     wait 3
     cz q[0],q[1]
     wait 3
+    cz q[0],q[1]
+    wait 3
     cnot q[0],q[1]
     wait 3
     toffoli q[0],q[1],q[1]
-    wait 3
+    wait 1073741694
+    prep_z q[2]
+    wait 1
+    z q[2]
+    wait 1
+    display
 
 .kernel_2
 

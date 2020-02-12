@@ -22,6 +22,7 @@ qubits 3
     rz q[0], 0.15
     swap q[0],q[1]
     cz q[0],q[1]
+    cz q[0],q[1]
     cnot q[0],q[1]
     toffoli q[0],q[1],q[1]
     display
