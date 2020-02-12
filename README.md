@@ -7,9 +7,9 @@ Simple OpenQL exercises for teaching
 3. [Teleportation](exercise003_teleportation.py)
 4. [Grover search](exercise004_grover_search.py)
 5. [Full adder](exercise005_ripple_carry_adder.py)
+8. [Shor code](exercise008_shor_code.py)
 
 ### Planned
 
 6. Shor factorisation
 7. Surface code cycle
-8. Small codes

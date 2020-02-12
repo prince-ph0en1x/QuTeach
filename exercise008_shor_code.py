@@ -1,4 +1,4 @@
-# Quantum Search
+# Quantum Shor Code
 
 from openql import openql as ql
 import os
@@ -23,52 +23,51 @@ k1.display()
 p.add_kernel(k1)
 
 k2 = ql.Kernel("phase_encode", platform, num_qubits)
-k2.gate('x', [2])
-    # cnot q0,q3
-    # cnot q0,q6
-    # h q0
-    # h q3
-    # h q6
+k2.gate('cnot', [0,3])
+k2.gate('cnot', [0,6])
+k2.gate('h', [0])
+k2.gate('h', [3])
+k2.gate('h', [6])
 k2.display()
 p.add_kernel(k2)
 
 k3 = ql.Kernel("bitflip_encode", platform, num_qubits)
-	# cnot q0,q1
- #    cnot q0,q2
- #    cnot q3,q4
- #    cnot q3,q5
- #    cnot q6,q7
- #    cnot q6,q8
+k3.gate('cnot', [0,1])
+k3.gate('cnot', [0,2])
+k3.gate('cnot', [3,4])
+k3.gate('cnot', [3,5])
+k3.gate('cnot', [6,7])
+k3.gate('cnot', [6,8])
 k3.display()
 p.add_kernel(k3)
 
 k4 = ql.Kernel("inject_error", platform, num_qubits)
-    # x q0
-    # z q0
-    # x q1
+k4.gate('x', [0])
+k4.gate('z', [0])
+k4.gate('x', [1])
 k4.display()
 p.add_kernel(k4)
 
 k5 = ql.Kernel("bitflip_decode_and_correct", platform, num_qubits)
-    # cnot q0,q1
-    # cnot q0,q2
-    # toffoli q2,q1,q0
-    # cnot q3,q4
-    # cnot q3,q5
-    # toffoli q5,q4,q3
-    # cnot q6,q7
-    # cnot q6,q8
-    # toffoli q8,q7,q6
+k5.gate('cnot', [0,1])
+k5.gate('cnot', [0,2])
+k5.gate('toffoli', [2,1,0])
+k5.gate('cnot', [3,4])
+k5.gate('cnot', [3,5])
+k5.gate('toffoli', [5,4,3])
+k5.gate('cnot', [6,7])
+k5.gate('cnot', [6,8])
+k5.gate('toffoli', [8,7,6])
 k5.display()
 p.add_kernel(k5)
 
 k6 = ql.Kernel("phaseflip_decode_and_correct", platform, num_qubits)
-    # h q0
-    # h q3
-    # h q6
-    # cnot q0,q3
-    # cnot q0,q6
-    # toffoli q6,q3,q0
+k6.gate('h', [0])
+k6.gate('h', [3])
+k6.gate('h', [6])
+k6.gate('cnot', [0,3])
+k6.gate('cnot', [0,6])
+k6.gate('toffoli', [6,3,0])
 k6.display()
 p.add_kernel(k6)
 
