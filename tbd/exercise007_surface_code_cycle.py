@@ -11,7 +11,7 @@ ql.set_option('write_qasm_files', 'yes')
 config_fn  = os.path.join(curdir, 'config_qx.json')
 platform   = ql.Platform('platform_none', config_fn)
 
-num_qubits = 3
+num_qubits = 17
 p = ql.Program('exercise_qasm_004', platform, num_qubits)
 
 k1 = ql.Kernel("initialize", platform, num_qubits)
@@ -33,19 +33,132 @@ k2.gate('x', [2])
 k2.display()                # Mark |011>
 p.add_kernel(k2)
 
-k3 = ql.Kernel("amplify", platform, num_qubits)
 
-for i in range(0, num_qubits):
-	k3.gate('h', [i])
-for i in range(0, num_qubits):
-	k3.gate('x', [i])
-k3.gate('h', [2]) 
-k3.gate('toffoli', [0,1,2])
-k3.gate('h', [2])
-for i in range(0, num_qubits):
-	k3.gate('x', [i])
-for i in range(0, num_qubits):
-	k3.gate('h', [i])
+qubits 17
+
+.mapping
+  map q0,  D1
+  map q1,  D2
+  map q2,  D3
+  map q3,  D4
+  map q4,  D5
+  map q5,  D6
+  map q6,  D7
+  map q7,  D8
+  map q8,  D9
+
+  map q9,  X1
+  map q10, Z2
+  map q11, X2
+  map q12, Z1
+  map q13, Z3
+  map q14, X3
+  map q15, Z4
+  map q16, X4
+
+.init
+  prepz D1
+  H D1
+  prepz D2
+  H D2
+  prepz D3
+  H D3
+  prepz D4
+  H D4
+  prepz D5
+  H D5
+  prepz D6
+  H D6
+  prepz D7
+  H D7
+  prepz D8
+  H D8
+  prepz D9
+  H D9
+
+  prepz X1
+  prepz X2
+  prepz X3
+  prepz X4
+  
+  prepz Z1
+  prepz Z2
+  prepz Z3
+  prepz Z4
+
+.surface_code_cycle
+  # X ancillas
+    # X1
+      H X1
+      cX X1, D2
+      cX X1, D3
+      H X1
+
+    # X2
+      H X2
+      cX X2, D1
+      cX X2, D2
+      cX X2, D4
+      cX X2, D5
+      H X2
+
+    # X3
+      H X3
+      cX X3, D5
+      cX X3, D6
+      cX X3, D8
+      cX X3, D9
+      H X3
+
+    # X4
+      H X4
+      cX X4, D7
+      cX X4, D8
+      H X4
+
+  # Z ancillas
+    # Z1
+      H Z1
+      cZ Z1, D1
+      cZ Z1, D4
+      H Z1
+
+    # Z2
+      H Z2
+      cZ Z2, D2
+      cZ Z2, D3
+      cZ Z2, D5
+      cZ Z2, D6
+      H Z2
+
+    # Z3
+      H Z3
+      cZ Z3, D4
+      cZ Z3, D5
+      cZ Z3, D7
+      cZ Z3, D8
+      H Z3
+
+    # Z4
+      H Z4
+      cZ Z4, D6
+      cZ Z4, D9
+      H Z4
+# display
+
+.syndromes_code
+  # X ancillas
+    measure X1
+    measure X2
+    measure X3
+    measure X4
+  # Z ancillas
+    measure Z1
+    measure Z2
+    measure Z3
+    measure Z4
+display_binary
+
     
 k3.display()
 p.add_kernel(k3)
